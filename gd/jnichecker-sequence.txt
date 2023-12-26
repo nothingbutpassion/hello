@@ -1,0 +1,49 @@
+@startuml
+hide footbox
+participant "main()"            as main
+participant ArgumentParser  as argument
+participant ErrorChecker    as checker
+participant ErrorCollector      as db
+participant Output          as out
+
+activate main
+main -> argument: parse(arguments)
+activate argument
+argument -> argument: resolve arguments\ncheck files permisson\nget verbose level
+main <-- argument: [files, verbose level]
+deactivate argument
+
+main -> db: setVerboseLevel(verbose level)
+activate db
+db -> db: record verbose level
+main <--db: setVerboseLevel() done
+deactivate db
+...
+loop file in files
+main -> checker: check(file)
+activate checker
+loop checker in error checkers
+checker -> checker: call checker to check file
+alt checker find errors
+checker -> db: reportError(errors)
+activate db
+db -> db: record errors
+checker <-- db:reportError() done
+deactivate db
+end
+end
+main <-- checker: check() done
+deactivate checker
+end
+...
+main -> out: printError()
+activate out
+out -> db: getErrors()
+activate db
+out <-- db: getErrors() done
+deactivate db
+out -> out: write errors to stderr
+main <-- out: printError() done.
+deactivate out
+deactivate main
+@enduml

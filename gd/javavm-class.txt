@@ -1,0 +1,33 @@
+@startuml
+class JNIInvokeInterface {
+    +jint (*DestroyJavaVM) (JavaVM*);\n\
+...
+    +jint (*DetachCurrentThread) (JavaVM*);;\n\
+...
+}
+
+class JavaVM {
+ +JNIInvokeInterface* functions;
+
+ +jint DestroyJavaVM(){\n\
+     return functions->DestroyJavaVM(this); \n\
+}\n\
+...
++jint DetachCurrentThread() {\n\
+    return functions->DetachCurrentThread(this);\n\
+}
+
+}
+
+class JavaVMMock {
+	-JavaVMMock()
+	-~JavaVMMock()
+	+MOCK_METHOD0(DestroyJavaVM, jint());\n\
+...
+	+MOCK_METHOD0(DetachCurrentThread, jint());\n\
+...
+}
+
+JavaVM ->JNIInvokeInterface 
+JavaVM <|--JavaVMMock
+@enduml

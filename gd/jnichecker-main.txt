@@ -1,0 +1,23 @@
+@startuml
+start
+:解析命令参数;
+if (参数输入有效？) then (是)
+else (否)
+:提示参数输入有误;
+stop
+endif
+:获得待处理文件和错误输出级别;
+while (有未处理文件?) 
+:预处理文件;
+while (有错误类型未检查？)
+:检查文件错误;
+if (发现错误) then (是)
+:报告错误;
+else (否)
+endif
+endwhile
+endwhile
+:收集已报告错误;
+:依错误输出级别输出错误;
+stop
+@enduml

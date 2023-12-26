@@ -1,0 +1,26 @@
+@startuml
+start
+if (指定错误输出级别?) then (是)
+if (指定级别是否为1-5?) then (是)
+:设置错误输出级别;
+else (否)
+:显示命令使用帮助;
+stop
+endif
+else (否)
+:设置输出级别为1;
+endif
+
+if (是否指定输入文件?) then (是)
+if (输入C/C++文件且可读？) then (是)
+else (否)
+:显示输入文件错误;
+stop
+endif
+else (否)
+:指示未输入任何文件;
+stop
+endif
+:参数解析成功;
+stop
+@enduml

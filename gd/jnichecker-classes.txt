@@ -1,0 +1,55 @@
+@startuml
+class Helper {
+    +removeCR(file)
+    +removeComments(file)
+    +fileReadable(file)
+    +fileLineNumber(file, pos)
+    +serach(regex, str)
+    +match(regex, str)
+    +jniFunctionsRegex()
+    +jniTypesRegex()
+    +jniSymbolsRegex()
+    +nativeMethodsRegex()
+}
+
+class ArgumentParser {
+    +parse(arguments)
+    +getFiles()
+    +getVerboseLevel()
+    -verboseLevel
+    -files
+}
+
+class ErrorChecker {
+    +check(file)
+    +addChecker(checker)
+    +removeChecker(checker)
+    -checkers
+}
+
+class ErrorCollector {
+    +getVerboseLevel()
+    +setVerboseLevel(verboseLevel)
+    +getErrorCount()
+    +getErrors()
+    +reportErrors(errors)
+    +sortErrors()
+    -verboseLevel
+    -errorCount
+    -errors
+}
+
+class Output {
+    +write(errors)
+    +setFD(fd)
+    +setFormat()
+    -fd
+    -format
+}
+
+ArgumentParser --> Helper
+ErrorChecker --> Helper
+Helper <-- ErrorCollector
+Helper <-- Output
+     
+@enduml

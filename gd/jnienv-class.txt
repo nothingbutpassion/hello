@@ -1,0 +1,35 @@
+@startuml
+class JNINativeInterface {
+	+jnit(*GetVersion) (JNIEnv*);\n\
+...
+	+jclass (*FindClass) (JNIEnv*, const char*);\n\
+...
+}
+
+class JNIEnv {
+	+JNINativeInterface* functions;
+	+jint GetVersion() {\n\
+	return functions->GetVersion(this);\n\
+}\n\
+...
+	+jclass FindClass(const char* name) {\n\
+	return functions->FindClass(this, name);\n\
+}\n\
+...
+}
+
+
+class JNIEnvMock {
+	-JNIEnvMock()
+	-~JNIEnvMock()
+	+MOCK_METHOD0(GetVersion, jint());\n\
+...
+	+MOCK_METHOD1(FindClass, jclass(const char*));\n\
+...
+}
+
+JNIEnv ->JNINativeInterface 
+JNIEnv <|-- JNIEnvMock
+
+
+@enduml
